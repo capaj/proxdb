@@ -1,0 +1,41 @@
+{
+  "name": "mobservable-db",
+  "version": "0.0.1",
+  "description": "an embedded DB on top of levelUp, mobservable and Joi for validations",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --recursive"
+  },
+  "engines": {
+    "node": ">=5.5.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/capaj/mobservable-db.git"
+  },
+  "keywords": [
+    "observable"
+  ],
+  "author": "capajj@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://gitlab.com/capaj/mobservable-db/issues"
+  },
+  "homepage": "https://gitlab.com/capaj/mobservable-db#README",
+  "dependencies": {
+    "bluebird": "^3.1.5",
+    "joi": "^7.2.3",
+    "level": "^1.4.0",
+    "level-sublevel": "^6.5.4",
+    "lodash": "^4.1.0",
+    "mobservable": "^1.2.3",
+    "pluralize": "^1.2.1",
+    "traverse": "^0.6.6"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "husky": "^0.10.2",
+    "mocha": "^2.4.5",
+    "standard": "^5.4.1"
+  }
+}
