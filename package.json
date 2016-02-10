@@ -1,5 +1,5 @@
 {
-  "name": "mobservable-db",
+  "name": "node-mdb",
   "version": "0.0.1",
   "description": "an embedded DB on top of levelUp, mobservable and Joi for validations",
   "main": "index.js",
