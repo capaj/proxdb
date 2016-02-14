@@ -1,12 +1,62 @@
 /* eslint-env node, mocha */
 'use strict'
+const nmDb = require('../index')
+const debug = require('debug')('model.spec')
+const joi = nmDb.joi
+const expect = require('chai').expect
+const backingStore = require('../mocks/backing-store-mock')
+const mobservable = require('mobservable')
 
 describe('model', function () {
-  it('should give me a constructor I can use to create entities of certain schema', function () {
+  let Book
+  let Author
+  let calls
+  let clarke
+  before(function () {
+    nmDb.backingStore.provide((name) => {
+      return backingStore
+    })
+  })
+  it('should give me a constructor I can use to create entities of joi schema, fields in the schema should become observable', function () {
+    Author = nmDb.model('author', {
+      name: joi.string().required(),
+      birth: joi.number()
+    })
+    clarke = new Author({name: 'A.C.Clarke', birth: 1965})
+    expect(clarke.name).to.equal('A.C.Clarke')
+    expect(clarke.birth).to.equal(1965)
+    expect(mobservable.isObservable(clarke)).to.equal(true)
+    expect(mobservable.isObservable(clarke, 'name')).to.equal(true)
+    expect(mobservable.isObservable(clarke, 'birth')).to.equal(true)
+  })
 
+  it('should save the object upon creation into backing store', function () {
+    expect(backingStore.callLog.put[0]).to.eql({
+      "doc": {
+        "birth": 1965,
+        "name": "A.C.Clarke"
+      },
+      "id": "8b68eaf153c763eb86885cc810142cd1ad7f53cc"
+    })
+  })
+
+  it('should allow to put any other properties on the DB objects, but those should not be observable', function () {
+    clarke.notObservedProp = 'test'
+    expect(mobservable.isObservable(clarke, 'notObservedProp')).to.equal(false)
   })
 
   it('entites are observables which are saved with "put" on any change', function () {
+    clarke.birth = 1917 // he was actually born 1917
+    expect(backingStore.callLog.put[1]).to.eql({
+      "doc": {
+        "birth": 1917,
+        "name": "A.C.Clarke"
+      },
+      "id": "8b68eaf153c763eb86885cc810142cd1ad7f53cc"
+    })
+  })
+
+  it('these should be persisted and if initialized again, should contain previously created', function () {
 
   })
 
@@ -14,11 +64,30 @@ describe('model', function () {
 
   })
 
-  it('should validate any change against the schema', function (done) {
+  it('should validate any change against the schema', function () {
 
   })
 
-  it('should allow a special "reference type" which gets automatically populated by observable instances on startup', function (done) {
+  it('should allow a special "reference type" ref which gets automatically populated by observable instances on startup', function () {
+    Book = nmDb.model('book', {
+      author: nmDb.ref('author'),
+      name: joi.string().required(),
+      birth: joi.number()
+    })
+  })
+
+  it('should allow for an arrayOfRefs which gets populated by observable instances on startup', function () {
+    const Bookstore = nmDb.model('bookstore', {
+      books: nmDb.arrayOfRefs('book'),
+      address: joi.string().required()
+    })
+  })
+
+  it('when putting into sublevel, "reference type" values should be saved as simple id strings', function () {
+
+  })
+
+  after(function () {
 
   })
 })

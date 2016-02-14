@@ -3,6 +3,7 @@
 const expect = require('chai').expect
 const Joi = require('joi')
 const joiToNulled = require('../../lib/joi-to-nulled')
+const nmDb = require('../../index')
 const _ = require('lodash')
 
 describe('joi to nulled object', function () {
@@ -41,6 +42,14 @@ describe('joi to nulled object', function () {
     expect(nulled.any).to.equal(null)
     expect(nulled.created).to.equal(null)
     expect(cloneOfSchema).to.eql(ts)
+  })
+
+  it('should convert a schema with nmDb.ref() type', function () {
+    const ts = {
+      author: nmDb.ref('author')
+    }
+    const nulled = joiToNulled(ts)
+    expect(nulled.author).to.equal(null)
   })
 
   it('should throw when supplied with undefined', function () {
