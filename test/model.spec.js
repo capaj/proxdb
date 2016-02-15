@@ -56,12 +56,14 @@ describe('model', function () {
   })
 
 
-  it('should validate any change against the schema', function () {
+  it('should validate any change against the schema and throw if schema validation fails', function () {
     try {
       clarke.name = 42
     } catch (err) {
       expect(err.toString()).to.equal('ValidationError: "value" must be a string')
     }
+    //if caught, value should not be set
+    expect(clarke.name).to.equal('A.C.Clarke')
   })
 
   it('entities can be removed and doing so removes them from the backup by calling "del" method', function () {
@@ -69,24 +71,36 @@ describe('model', function () {
     expect(backingStore.callLog.del[0].id).to.match(/Z8b68eaf153c763eb8688/)
   })
 
-  it('should allow a special "reference type" ref which gets automatically populated by observable instances on startup', function () {
-    Book = nmDb.model('book', {
-      author: nmDb.ref('author'),
-      name: joi.string().required(),
-      birth: joi.number()
+  describe('references', function () {
+    it('should allow a special "reference type" ref', function () {
+      Book = nmDb.model('book', {
+        author: nmDb.ref('author'),
+        name: joi.string().required()
+      })
+      clarke = new Author({name: 'A.C.Clarke', birth: 1917})
+      const odyssey = new Book({author: clarke, name: '2001: A space Oddysey'})
+      expect(backingStore.callLog.put[3].doc).to.eql({
+        "author": clarke.id,
+        "name": '2001: A space Oddysey'
+      })
+    })
+
+    it('should get automatically populated by observable instances on startup', function () {
+
+    })
+
+    it('should allow for an arrayOfRefs which gets populated by observable instances on startup', function () {
+      const Bookstore = nmDb.model('bookstore', {
+        books: nmDb.arrayOfRefs('book'),
+        address: joi.string().required()
+      })
+    })
+
+    it('when putting into sublevel, "reference type" values should be saved as simple id strings', function () {
+
     })
   })
 
-  it('should allow for an arrayOfRefs which gets populated by observable instances on startup', function () {
-    const Bookstore = nmDb.model('bookstore', {
-      books: nmDb.arrayOfRefs('book'),
-      address: joi.string().required()
-    })
-  })
-
-  it('when putting into sublevel, "reference type" values should be saved as simple id strings', function () {
-
-  })
 
   after(function () {
 
