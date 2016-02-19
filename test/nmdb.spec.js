@@ -21,3 +21,8 @@ describe('index methods', function () {
     expect(ts.prop._nmDbRefTo).to.equal('some_schema')
   })
 })
+
+process.on('unhandledRejection', function (err, p) {
+  console.warn('Unhandled Rejection')
+  console.warn('stack: ', err.stack)
+})

@@ -13,11 +13,17 @@ const store = {
   },
   createReadStream: () => {
     return {
-      on: (evName) => {
-
+      on: (evName, cb) => {
+        console.log(evName)
+        if (evName === 'data') {
+          store.stored.forEach(cb)
+        } else if (evName === 'end') {
+          setTimeout(cb, 2)
+        }
       }
     }
-  }
+  },
+  stored: []
 }
 
 module.exports = store

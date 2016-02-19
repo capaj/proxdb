@@ -4,11 +4,10 @@ const nmDb = require('../index')
 const debug = require('debug')('model.spec')
 const joi = nmDb.joi
 const expect = require('chai').expect
-const backingStore = require('../mocks/backing-store-mock')
+const backingStore = require('./mocks/backing-store-mock')
 const mobservable = require('mobservable')
 
 describe('model', function () {
-  let Book
   let Author
   let calls
   let clarke
@@ -51,10 +50,9 @@ describe('model', function () {
     })
   })
 
-  it('these should be persisted and if initialized again, should contain previously created', function () {
+  it('should initialize any permanently stored into the map', function () {
 
   })
-
 
   it('should validate any change against the schema and throw if schema validation fails', function () {
     try {
@@ -72,12 +70,23 @@ describe('model', function () {
   })
 
   describe('references', function () {
+    let Book
+
+    before(function () {
+      debug('provide fake store')
+      nmDb.backingStore.provide((name) => {
+        return backingStore
+      })
+    })
+
     it('should allow a special "reference type" ref', function () {
       Book = nmDb.model('book', {
         author: nmDb.ref('author'),
         name: joi.string().required()
       })
+
       clarke = new Author({name: 'A.C.Clarke', birth: 1917})
+      expect(clarke.id).to.match(/Z61b763a149d4f5e96a82/)
       const odyssey = new Book({author: clarke, name: '2001: A space Oddysey'})
       expect(backingStore.callLog.put[3].doc).to.eql({
         "author": clarke.id,
@@ -85,11 +94,33 @@ describe('model', function () {
       })
     })
 
-    it('should get automatically populated by observable instances on startup', function () {
+    it('should get automatically populated by observable instances on startup', function (done) {
+      const Author = nmDb.model('author', {
+        name: joi.string().required(),
+        birth: joi.number()
+      })
+      clarke = new Author({name: 'A.C.Clarke', birth: 1965})
+      backingStore.stored.push({
+        key: '20160218T231100.687Z61b763a149d4f5e96a82', value: {
+          "author": clarke.id,
+          "name": '2001: A space Oddysey'
+        }
+      })
+      // debug('bs', backingStore)
 
+      Book = nmDb.model('book', {
+        author: nmDb.ref('author'),
+        name: joi.string().required()
+      })
+      Book.initPromise.then(() => {
+        console.log(Book.all()[0])
+        expect(Book.all()[0].author === clarke).to.equal(true)
+        backingStore.stored = []
+        done()
+      })
     })
 
-    it('should allow for an arrayOfRefs which gets populated by observable instances on startup', function () {
+    it.skip('should allow for an arrayOfRefs which gets populated by observable instances on startup', function () {
       const Bookstore = nmDb.model('bookstore', {
         books: nmDb.arrayOfRefs('book'),
         address: joi.string().required()
