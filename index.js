@@ -8,7 +8,7 @@ const ref = (name) => {
 }
 
 const arrayOfRefs = (name) => {
-  const objSchema = joi.array().items(joi.object())
+  const objSchema = joi.object()
   objSchema._nmDbRefTo = name
   return objSchema
 }

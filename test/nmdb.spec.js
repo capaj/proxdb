@@ -17,7 +17,7 @@ describe('index methods', function () {
       prop: nmDb.arrayOfRefs('some_schema')
     }
     expect(ts.prop.isJoi).to.equal(true)
-    expect(ts.prop._type).to.equal('array')
+    expect(ts.prop._type).to.equal('object')
     expect(ts.prop._nmDbRefTo).to.equal('some_schema')
   })
 })

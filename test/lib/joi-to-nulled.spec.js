@@ -52,6 +52,14 @@ describe('joi to nulled object', function () {
     expect(nulled.author).to.equal(null)
   })
 
+  it('should convert a schema with nmDb.arrayOfRefs()', function () {
+    const ts = {
+      authors: nmDb.arrayOfRefs('author')
+    }
+    const nulled = joiToNulled(ts)
+    expect(nulled.authors).to.equal(null)
+  })
+
   it('should throw when supplied with undefined', function () {
     let e
     try {

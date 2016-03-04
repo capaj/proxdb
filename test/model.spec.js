@@ -120,10 +120,29 @@ describe('model', function () {
       })
     })
 
-    it.skip('should allow for an arrayOfRefs which gets populated by observable instances on startup', function () {
+    it('should allow for an arrayOfRefs which gets populated by observable instances on startup', function (done) {
+      clarke = new Author({name: 'A.C.Clarke', birth: 1917})
+      const odyssey = new Book({author: clarke, name: '2001: A space Oddysey'})
+      const rama = new Book({author: clarke, name: 'Rendezvous with Rama'})
+      backingStore.stored.push({
+        key: '20160218T231100.687Z61b763a149d4f5e96a82', value: {
+          "books": [odyssey.id, rama.id],
+          "address": 'clarke road 1'
+        }
+      })
+
       const Bookstore = nmDb.model('bookstore', {
         books: nmDb.arrayOfRefs('book'),
         address: joi.string().required()
+      })
+
+      Bookstore.initPromise.then(() => {
+        const bs = Bookstore.all()[0]
+        console.log('books ', bs.books[0])
+        expect(bs.books[0] === odyssey).to.equal(true)
+        // expect(bs.books[1] === rama).to.equal(true)
+        backingStore.stored = []
+        done()
       })
     })
 
