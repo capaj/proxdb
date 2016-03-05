@@ -28,7 +28,7 @@
     "level": "^1.4.0",
     "level-sublevel": "^6.5.4",
     "lodash": "^4.1.0",
-    "mobservable": "^1.2.3",
+    "mobx": "git+ssh://git@github.com/capaj/mobservable.git#with-lib",
     "pluralize": "^1.2.1",
     "traverse": "^0.6.6"
   },

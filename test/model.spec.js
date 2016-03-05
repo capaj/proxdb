@@ -5,7 +5,7 @@ const debug = require('debug')('model.spec')
 const joi = nmDb.joi
 const expect = require('chai').expect
 const backingStore = require('./mocks/backing-store-mock')
-const mobservable = require('mobservable')
+const mobx = require('mobx')
 
 describe('model', function () {
   let Author
@@ -24,9 +24,9 @@ describe('model', function () {
     clarke = new Author({name: 'A.C.Clarke', birth: 1965})
     expect(clarke.name).to.equal('A.C.Clarke')
     expect(clarke.birth).to.equal(1965)
-    expect(mobservable.isObservable(clarke)).to.equal(true)
-    expect(mobservable.isObservable(clarke, 'name')).to.equal(true)
-    expect(mobservable.isObservable(clarke, 'birth')).to.equal(true)
+    expect(mobx.isObservable(clarke)).to.equal(true)
+    expect(mobx.isObservable(clarke, 'name')).to.equal(true)
+    expect(mobx.isObservable(clarke, 'birth')).to.equal(true)
   })
 
   it('should save the object upon creation into backing store', function () {
@@ -39,7 +39,7 @@ describe('model', function () {
 
   it('should allow to put any other properties on the DB objects, but those should not be observable', function () {
     clarke.notObservedProp = 'test'
-    expect(mobservable.isObservable(clarke, 'notObservedProp')).to.equal(false)
+    expect(mobx.isObservable(clarke, 'notObservedProp')).to.equal(false)
   })
 
   it('entites are observables which are saved with "put" on any change', function () {
