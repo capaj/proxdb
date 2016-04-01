@@ -47,7 +47,7 @@ test('object can be extended with any property except _disposer or _sublevel', (
 
 test('any change calls put() method', (t) => {
   clarke.birth = 1917 // he was actually born 1917
-  t.same(backingStore.callLog.put[1].doc, {
+  t.same(backingStore.callLog.put[2].doc, {
     "birth": 1917,
     "name": "A.C.Clarke"
   })
