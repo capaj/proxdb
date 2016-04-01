@@ -1,93 +1,91 @@
-/* eslint-env node, mocha */
 'use strict'
-const expect = require('chai').expect
-const Joi = require('joi')
-const joiToNulled = require('../../lib/joi-to-nulled')
-const nmDb = require('../../index')
-const _ = require('lodash')
+import test from 'ava'
+import nmDb from '../../index'
+import _ from 'lodash'
+import Joi from 'joi'
+import joiToNulled from '../../lib/joi-to-nulled'
 
-describe('joi to nulled object', function () {
-  const generateUsername = (context) => {
-    return context.firstname.toLowerCase() + '-' + context.lastname.toLowerCase()
+const generateUsername = (context) => {
+  return context.firstname.toLowerCase() + '-' + context.lastname.toLowerCase()
+}
+generateUsername.description = 'generated'
+const schema = {
+  name: Joi.string().default(generateUsername),
+  bool: Joi.boolean(),
+  age: Joi.number(),
+  any: Joi.any().allow(['a', 'b']),
+  created: Joi.date().default(Date.now, 'time of creation')
+}
+
+test('converts simple joi schema to nulled object', (t) => {
+  const cloneOfSchema = _.cloneDeep(schema)
+  const nulled = joiToNulled(schema)
+  t.same(cloneOfSchema, schema)
+
+  t.same(nulled.name, null)
+  t.same(nulled.bool, null)
+  t.same(nulled.age, null)
+  t.same(nulled.any, null)
+  t.same(nulled.created, null)
+})
+
+test('convert a more complicated joi schema', (t) => {
+  const ts = Joi.object().keys(schema)
+  const cloneOfSchema = _.cloneDeep(ts)
+
+  const nulled = joiToNulled(ts)
+
+  t.same(nulled.name).to.equal(null)
+  t.same(nulled.bool, null)
+  t.same(nulled.age, null)
+  t.same(nulled.any, null)
+  t.same(nulled.created, null)
+  t.same(cloneOfSchema, ts)
+})
+
+test('convert a schema with nmDb.ref() type', (t) => {
+  const ts = {
+    author: nmDb.ref('author')
   }
-  generateUsername.description = 'generated'
-  const schema = {
-    name: Joi.string().default(generateUsername),
-    bool: Joi.boolean(),
-    age: Joi.number(),
-    any: Joi.any().allow(['a', 'b']),
-    created: Joi.date().default(Date.now, 'time of creation')
+  const nulled = joiToNulled(ts)
+  t.same(nulled.author, null)
+})
+
+test('convert a schema with nmDb.arrayOfRefs()', (t) => {
+  const ts = {
+    authors: nmDb.arrayOfRefs('author')
   }
-  it('should convert a simple joi schema to nulled object', function () {
-    const cloneOfSchema = _.cloneDeep(schema)
-    const nulled = joiToNulled(schema)
-    expect(cloneOfSchema).to.eql(schema)
+  const nulled = joiToNulled(ts)
+  t.same(nulled.authors, null)
+})
 
-    expect(nulled.name).to.equal(null)
-    expect(nulled.bool).to.equal(null)
-    expect(nulled.age).to.equal(null)
-    expect(nulled.any).to.equal(null)
-    expect(nulled.created).to.equal(null)
-  })
+test('throws when called on undefined', (t) => {
+  let e
+  try {
+    joiToNulled()
+  } catch (err) {
+    e = err
+  }
+  t.same(e.toString(), "TypeError: Cannot read property 'isJoi' of undefined")
+})
 
-  it('should convert a more complicated joi schema', function () {
-    const ts = Joi.object().keys(schema)
-    const cloneOfSchema = _.cloneDeep(ts)
-
-    const nulled = joiToNulled(ts)
-
-    expect(nulled.name).to.equal(null)
-    expect(nulled.bool).to.equal(null)
-    expect(nulled.age).to.equal(null)
-    expect(nulled.any).to.equal(null)
-    expect(nulled.created).to.equal(null)
-    expect(cloneOfSchema).to.eql(ts)
-  })
-
-  it('should convert a schema with nmDb.ref() type', function () {
-    const ts = {
-      author: nmDb.ref('author')
-    }
-    const nulled = joiToNulled(ts)
-    expect(nulled.author).to.equal(null)
-  })
-
-  it('should convert a schema with nmDb.arrayOfRefs()', function () {
-    const ts = {
-      authors: nmDb.arrayOfRefs('author')
-    }
-    const nulled = joiToNulled(ts)
-    expect(nulled.authors).to.equal(null)
-  })
-
-  it('should throw when supplied with undefined', function () {
-    let e
-    try {
-      joiToNulled()
-    } catch (err) {
-      e = err
-    }
-    expect(e.toString()).to.equal("TypeError: Cannot read property 'isJoi' of undefined")
-  })
-
-  it('should throw when trying to use alternatives', function () {
-    let e
-    const sBad = Joi.alternatives().try([
-      Joi.string().valid('key'),
-      Joi.number().valid(5),
-      Joi.object().keys({
-        a: Joi.boolean().valid(true),
-        b: Joi.alternatives().try([
-          Joi.string().regex(/^a/),
-          Joi.string().valid('boom')
-        ])
-      })
-    ])
-    try {
-      joiToNulled(sBad)
-    } catch (err) {
-      e = err
-    }
-    expect(e.toString()).to.equal('Error: alternatives in Joi schemas are not supported')
-  })
+test('throws when trying to use alternatives', (t) => {
+  let e
+  const sBad = Joi.alternatives().try([
+    Joi.string().valid('key'),
+    Joi.number().valid(5),
+    Joi.object().keys({
+      a: Joi.boolean().valid(true),
+      b: Joi.alternatives().try([
+        Joi.string().regex(/^a/),
+        Joi.string().valid('boom')
+      ])
+    })
+  ])
+  try {
+    joiToNulled(sBad)
+  } catch (err) {
+    e = err
+  }
+  t.same(e.toString(), 'Error: alternatives in Joi schemas are not supported')
 })

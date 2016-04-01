@@ -4,7 +4,7 @@
   "description": "an embedded in memory DB on top of levelUp, mobservable and Joi for validations",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --recursive"
+    "test": "ava"
   },
   "engines": {
     "node": ">=5.6.0"
@@ -33,6 +33,7 @@
     "traverse": "^0.6.6"
   },
   "devDependencies": {
+    "ava": "^0.13.0",
     "chai": "^3.5.0",
     "husky": "^0.10.2",
     "mocha": "^2.4.5",
