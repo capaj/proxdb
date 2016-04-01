@@ -35,7 +35,7 @@ test('convert a more complicated joi schema', (t) => {
 
   const nulled = joiToNulled(ts)
 
-  t.same(nulled.name).to.equal(null)
+  t.same(nulled.name, null)
   t.same(nulled.bool, null)
   t.same(nulled.age, null)
   t.same(nulled.any, null)

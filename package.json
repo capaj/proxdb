@@ -4,7 +4,8 @@
   "description": "an embedded in memory DB on top of levelUp, mobservable and Joi for validations",
   "main": "index.js",
   "scripts": {
-    "test": "ava"
+    "test": "ava",
+    "tdd": "ava --watch"
   },
   "engines": {
     "node": ">=5.6.0"

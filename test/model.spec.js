@@ -6,11 +6,11 @@ import backingStore from './mocks/backing-store-mock'
 
 const debug = require('debug')('model.spec')
 const {joi} = nmDb
-
+let Author
+let calls
+let clarke
 test('returns contructor and constructor works', (t) => {
-  let Author
-  let calls
-  let clarke
+
   nmDb.backingStore.provide((name) => {
     return backingStore
   })
@@ -20,13 +20,14 @@ test('returns contructor and constructor works', (t) => {
   })
   clarke = new Author({name: 'A.C.Clarke', birth: 1965})
   t.same(clarke.name, 'A.C.Clarke')
-  t.same(clarke.birth, '1965')
+  t.same(clarke.birth, 1965)
   t.true(mobx.isObservable(clarke, 'name'))
   t.true(mobx.isObservable(clarke, 'birth'))
 })
 
 test('save the object upon creation into backing store', (t) => {
-  t.same(backingStore.callLog.put[0].id).to.match(/Z8b68eaf153c763eb8688/)
+  console.log(backingStore.callLog)
+  t.ok(backingStore.callLog.put[0].id.match(/Z8b68eaf153c763eb8688/))
   t.same(backingStore.callLog.put[0].doc, {
     "birth": 1965,
     "name": "A.C.Clarke"
