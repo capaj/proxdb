@@ -2,7 +2,7 @@
 import test from 'ava'
 import nmDb from '../index'
 import mobx from 'mobx'
-import backingStore from './mocks/backing-store-mock'
+import backingStore from '../mocks/backing-store-mock'
 
 const debug = require('debug')('model.spec')
 const {joi} = nmDb
@@ -52,10 +52,6 @@ test('any change calls put() method', (t) => {
     "name": "A.C.Clarke"
   })
 
-  Author = nmDb.model('testSchema', {
-    arrProp: joi.array()
-  })
-  clarke = new Author({name: 'A.C.Clarke', birth: 1965})
 })
 
 test('validates any change against the schema and throw if schema validation fails', (t) => {
@@ -88,7 +84,7 @@ test('references are stored by their id only', (t) => {
   clarke = new Author({name: 'A.C.Clarke', birth: 1917})
   t.same(clarke.id.match(/Z61b763a149d4f5e96a82/).length, 1)
   const odyssey = new Book({author: clarke, name: '2001: A space Oddysey'})
-  t.same(backingStore.callLog.put[3].doc, {
+  t.same(backingStore.callLog.put[5].doc, {
     "author": clarke.id,
     "name": '2001: A space Oddysey'
   })
@@ -137,7 +133,8 @@ test('populates array of refs on startup', (t) => {
 
   return Bookstore.initPromise.then(() => {
     const bs = Bookstore.all()[0]
-    console.log('books ', bs.books[0])
+    console.log('books ', bs.books)
+    console.log('books ', typeof bs.books)
     t.true(bs.books[0] === odyssey)
     // expect(bs.books[1] === rama).to.equal(true)
     backingStore.stored = []
