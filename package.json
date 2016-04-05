@@ -4,6 +4,7 @@
   "description": "an embedded in memory DB on top of levelUp, mobservable and Joi for validations",
   "main": "index.js",
   "scripts": {
+    "pretest": "standard",
     "precommit": "npm test",
     "test": "ava",
     "tdd": "ava --watch"

@@ -1,7 +1,7 @@
 import test from 'ava'
 import nmDb from '../index'
 
-test('should define a ref() type', t => {
+test('should define a ref() type', (t) => {
   const ts = {
     prop: nmDb.ref('some_schema')
   }
@@ -10,7 +10,7 @@ test('should define a ref() type', t => {
   t.same(ts.prop._nmDbRefTo, 'some_schema')
 })
 
-test('defines an arrayOfRefs() type', t => {
+test('defines an arrayOfRefs() type', (t) => {
   const ts = {
     prop: nmDb.ref('some_schema')
   }

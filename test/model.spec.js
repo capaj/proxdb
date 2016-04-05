@@ -4,7 +4,7 @@ import nmDb from '../index'
 import mobx from 'mobx'
 import backingStore from '../mocks/backing-store-mock'
 
-const debug = require('debug')('model.spec')
+// const debug = require('debug')('mobxdb:spec')
 const {joi} = nmDb
 nmDb.backingStore.provide((name) => {
   return backingStore
@@ -14,7 +14,7 @@ let Author = nmDb.model('author', {
   name: joi.string().required(),
   birth: joi.number()
 })
-let calls
+
 let clarke
 test('returns contructor and constructor works', (t) => {
   clarke = new Author({name: 'A.C.Clarke', birth: 1965})
