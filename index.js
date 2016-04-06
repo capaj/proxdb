@@ -3,13 +3,13 @@ const joi = require('joi')
 const model = require('./lib/model')
 const ref = (name) => {
   const objSchema = joi.object()
-  objSchema._nmDbRefTo = name
+  objSchema._mobxdbRefTo = name
   return objSchema
 }
 
 const arrayOfRefs = (name) => {
   const objSchema = joi.object()
-  objSchema._nmDbRefTo = name
+  objSchema._mobxdbRefTo = name
   return objSchema
 }
 

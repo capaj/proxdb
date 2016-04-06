@@ -7,7 +7,7 @@ test('should define a ref() type', (t) => {
   }
   t.same(ts.prop.isJoi, true)
   t.same(ts.prop._type, 'object')
-  t.same(ts.prop._nmDbRefTo, 'some_schema')
+  t.same(ts.prop._mobxdbRefTo, 'some_schema')
 })
 
 test('defines an arrayOfRefs() type', (t) => {
@@ -16,5 +16,5 @@ test('defines an arrayOfRefs() type', (t) => {
   }
   t.same(ts.prop.isJoi, true)
   t.same(ts.prop._type, 'object')
-  t.same(ts.prop._nmDbRefTo, 'some_schema')
+  t.same(ts.prop._mobxdbRefTo, 'some_schema')
 })

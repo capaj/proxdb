@@ -1,22 +1,22 @@
 'use strict'
 import test from 'ava'
-import nmDb from '../index'
+import mobxdb from '../index'
 import backingStore from '../mocks/backing-store-mock'
 
 const debug = require('debug')('mobxdb:spec')
-const {joi} = nmDb
+const {joi} = mobxdb
 
 debug('provide fake store')
-nmDb.backingStore.provide((name) => {
+mobxdb.backingStore.provide((name) => {
   return backingStore
 })
-const Author = nmDb.model('author', {
+const Author = mobxdb.model('author', {
   name: joi.string().required(),
   birth: joi.number()
 })
 
-let Book = nmDb.model('book', {
-  author: nmDb.ref('author'),
+let Book = mobxdb.model('book', {
+  author: mobxdb.ref('author'),
   name: joi.string().required()
 })
 let clarke
@@ -55,8 +55,8 @@ test('populates array of refs on startup', (t) => {
     }
   })
 
-  const Bookstore = nmDb.model('bookstore', {
-    books: nmDb.arrayOfRefs('book'),
+  const Bookstore = mobxdb.model('bookstore', {
+    books: mobxdb.arrayOfRefs('book'),
     address: joi.string().required()
   })
 
@@ -69,5 +69,20 @@ test('populates array of refs on startup', (t) => {
 })
 
 test.todo('references are typechecked', (t) => {
+  const BadType = mobxdb.model('wrongtype', {
+    name: joi.string().required(),
+    birth: joi.number()
+  })
 
+  const notAuthor = new BadType({
+    name: 'test',
+    birth: 1
+  })
+
+  t.throws(() => {
+    const book = new Book({author: notAuthor, name: '2001: A space Oddysey'})
+    ident(book)
+  })
 })
+
+test.todo('required refence throws with null')

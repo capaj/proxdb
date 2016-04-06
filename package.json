@@ -30,7 +30,7 @@
     "joi": "^8.0.5",
     "level": "^1.4.0",
     "level-sublevel": "^6.5.4",
-    "lodash": "^4.1.0",
+    "lodash": "^4.8.2",
     "mobx": "https://github.com/capaj/mobservable.git#with-lib",
     "pluralize": "^1.2.1",
     "traverse": "^0.6.6"
