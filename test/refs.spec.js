@@ -23,10 +23,10 @@ let clarke
 const ident = () => {}
 test('references are stored by their id only and are populated on startup', (t) => {
   clarke = new Author({name: 'A.C.Clarke', birth: 1917})
-  t.same(clarke.id.match(/Z61b763a149d4f5e96a82/).length, 1)
+  t.deepEqual(clarke.id.match(/Z61b763a149d4f5e96a82/).length, 1)
   const odyssey = new Book({author: clarke, name: '2001: A space Oddysey'})
   ident(odyssey)
-  t.same(backingStore.callLog.put[2].doc, {
+  t.deepEqual(backingStore.callLog.put[2].doc, {
     author: clarke.id,
     name: '2001: A space Oddysey'
   })
@@ -68,7 +68,7 @@ test('populates array of refs on startup', (t) => {
   })
 })
 
-test.todo('references are typechecked', (t) => {
+test.skip('references are typechecked', (t) => {
   const BadType = mobxdb.model('wrongtype', {
     name: joi.string().required(),
     birth: joi.number()

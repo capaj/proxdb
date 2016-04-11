@@ -20,13 +20,13 @@ const schema = {
 test('converts simple joi schema to nulled object', (t) => {
   const cloneOfSchema = _.cloneDeep(schema)
   const nulled = joiToNulled(schema)
-  t.same(cloneOfSchema, schema)
+  t.deepEqual(cloneOfSchema, schema)
 
-  t.same(nulled.name, null)
-  t.same(nulled.bool, null)
-  t.same(nulled.age, null)
-  t.same(nulled.any, null)
-  t.same(nulled.created, null)
+  t.deepEqual(nulled.name, null)
+  t.deepEqual(nulled.bool, null)
+  t.deepEqual(nulled.age, null)
+  t.deepEqual(nulled.any, null)
+  t.deepEqual(nulled.created, null)
 })
 
 test('convert a more complicated joi schema', (t) => {
@@ -35,12 +35,12 @@ test('convert a more complicated joi schema', (t) => {
 
   const nulled = joiToNulled(ts)
 
-  t.same(nulled.name, null)
-  t.same(nulled.bool, null)
-  t.same(nulled.age, null)
-  t.same(nulled.any, null)
-  t.same(nulled.created, null)
-  t.same(cloneOfSchema, ts)
+  t.deepEqual(nulled.name, null)
+  t.deepEqual(nulled.bool, null)
+  t.deepEqual(nulled.age, null)
+  t.deepEqual(nulled.any, null)
+  t.deepEqual(nulled.created, null)
+  t.deepEqual(cloneOfSchema, ts)
 })
 
 test('convert a schema with nmDb.ref() type', (t) => {
@@ -48,7 +48,7 @@ test('convert a schema with nmDb.ref() type', (t) => {
     author: nmDb.ref('author')
   }
   const nulled = joiToNulled(ts)
-  t.same(nulled.author, null)
+  t.deepEqual(nulled.author, null)
 })
 
 test('convert a schema with nmDb.arrayOfRefs()', (t) => {
@@ -56,7 +56,7 @@ test('convert a schema with nmDb.arrayOfRefs()', (t) => {
     authors: nmDb.arrayOfRefs('author')
   }
   const nulled = joiToNulled(ts)
-  t.same(nulled.authors, null)
+  t.deepEqual(nulled.authors, null)
 })
 
 test('throws when called on undefined', (t) => {
@@ -66,7 +66,7 @@ test('throws when called on undefined', (t) => {
   } catch (err) {
     e = err
   }
-  t.same(e.toString(), "TypeError: Cannot read property 'isJoi' of undefined")
+  t.deepEqual(e.toString(), "TypeError: Cannot read property 'isJoi' of undefined")
 })
 
 test('throws when trying to use alternatives', (t) => {
@@ -87,5 +87,5 @@ test('throws when trying to use alternatives', (t) => {
   } catch (err) {
     e = err
   }
-  t.same(e.toString(), 'Error: alternatives in Joi schemas are not supported')
+  t.deepEqual(e.toString(), 'Error: alternatives in Joi schemas are not supported')
 })

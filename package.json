@@ -30,13 +30,13 @@
     "joi": "^8.0.5",
     "level": "^1.4.0",
     "level-sublevel": "^6.5.4",
-    "lodash": "^4.8.2",
-    "mobx": "https://github.com/capaj/mobservable.git#with-lib",
+    "lodash": "^4.9.0",
+    "mobx": "https://github.com/capaj/mobservable.git#with_lib",
     "pluralize": "^1.2.1",
     "traverse": "^0.6.6"
   },
   "devDependencies": {
-    "ava": "^0.13.0",
+    "ava": "^0.14.0",
     "chai": "^3.5.0",
     "husky": "^0.11.4",
     "mocha": "^2.4.5",

@@ -9,5 +9,5 @@ test((t) => {
     name: joi.string().required()
   }
 
-  t.same(getRefPaths(schema), {author: 'author'})
+  t.deepEqual(getRefPaths(schema), {author: 'author'})
 })
