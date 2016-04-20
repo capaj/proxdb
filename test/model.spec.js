@@ -20,8 +20,6 @@ test('returns contructor and constructor works', (t) => {
   clarke = new Author({name: 'A.C.Clarke', birth: 1965})
   t.deepEqual(clarke.name, 'A.C.Clarke')
   t.deepEqual(clarke.birth, 1965)
-  t.true(mobx.isObservable(clarke, 'name'))
-  t.true(mobx.isObservable(clarke, 'birth'))
 })
 
 test('save the object upon creation into backing store', (t) => {
