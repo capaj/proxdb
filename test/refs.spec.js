@@ -26,7 +26,8 @@ test('references are stored by their id only and are populated on startup', (t) 
   t.deepEqual(clarke.id.match(/Z61b763a149d4f5e96a82/).length, 1)
   const odyssey = new Book({author: clarke, name: '2001: A space Oddysey'})
   ident(odyssey)
-  t.deepEqual(backingStore.callLog.put[2].doc, {
+  console.log(backingStore.callLog.put[1])
+  t.deepEqual(backingStore.callLog.put[1].doc, {
     author: clarke.id,
     name: '2001: A space Oddysey'
   })
@@ -39,15 +40,16 @@ test('references are stored by their id only and are populated on startup', (t) 
   // })
   // debug('bs', backingStore)
   return Book.initPromise.then(() => {
-    console.log('bi', Book.all()[0].author === clarke)
+    console.log(Book.all())
     t.true(Book.all()[0].author === clarke)
     backingStore.stored = []
   })
 })
 
 test('populates array of refs on startup', (t) => {
-  const odyssey = new Book({author: clarke, name: '2001: A space Oddysey'})
+  const odyssey = new Book({author: clarke, name: '2100: A space Oddysey'})
   const rama = new Book({author: clarke, name: 'Rendezvous with Rama'})
+
   backingStore.stored.push({
     key: '20160218T231100.687Z61b763a149d4f5e96a82', value: {
       books: [odyssey.id, rama.id],

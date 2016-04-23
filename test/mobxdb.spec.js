@@ -7,7 +7,7 @@ test('should define a ref() type', (t) => {
   }
   t.deepEqual(ts.prop.isJoi, true)
   t.deepEqual(ts.prop._type, 'object')
-  t.deepEqual(ts.prop._mobxdbRefTo, 'some_schema')
+  t.deepEqual(ts.prop._proxDbRefTo, 'some_schema')
 })
 
 test('defines an arrayOfRefs() type', (t) => {
@@ -16,5 +16,5 @@ test('defines an arrayOfRefs() type', (t) => {
   }
   t.deepEqual(ts.prop.isJoi, true)
   t.deepEqual(ts.prop._type, 'object')
-  t.deepEqual(ts.prop._mobxdbRefTo, 'some_schema')
+  t.deepEqual(ts.prop._proxDbRefTo, 'some_schema')
 })
