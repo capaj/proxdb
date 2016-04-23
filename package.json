@@ -1,7 +1,7 @@
 {
   "name": "mobxdb",
   "version": "0.0.2",
-  "description": "an embedded in memory DB on top of levelUp, mobservable and Joi for validations",
+  "description": "an embedded in memory DB on top of levelUp, proxevable and Joi for validations",
   "main": "index.js",
   "scripts": {
     "pretest": "echo",
@@ -14,10 +14,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@gitlab.com/capaj/mobservable-db.git"
+    "url": "git@github.com:capaj/mobxdb.git"
   },
   "keywords": [
-    "observable"
+    "observable",
+    "proxevable",
+    "in memory",
+    "database"
   ],
   "author": "capajj@gmail.com",
   "license": "MIT",
@@ -31,7 +34,6 @@
     "level": "^1.4.0",
     "level-sublevel": "^6.5.4",
     "lodash": "^4.9.0",
-    "mobx": "https://github.com/capaj/mobservable.git#with_lib",
     "pluralize": "^1.2.1",
     "proxevable": "0.0.5",
     "traverse": "^0.6.6"
