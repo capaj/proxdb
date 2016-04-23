@@ -21,7 +21,6 @@ test('returns contructor and constructor works', (t) => {
   t.deepEqual(clarke.name, 'A.C.Clarke')
   t.deepEqual(clarke.birth, 1965)
 
-  console.log(backingStore.callLog)
   t.truthy(backingStore.callLog.put[0].id.match(/Z8b68eaf153c763eb8688/))
   t.deepEqual(backingStore.callLog.put[0].doc, {
     birth: 1965,
