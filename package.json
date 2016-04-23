@@ -1,6 +1,6 @@
 {
   "name": "mobxdb",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "an embedded in memory DB on top of levelUp, mobservable and Joi for validations",
   "main": "index.js",
   "scripts": {
