@@ -68,9 +68,10 @@ test('populates array of refs on startup', (t) => {
   })
 })
 
-test.skip('references are typechecked', (t) => {
+test('references are typechecked', (t) => {
+  backingStore.stored = []
   const BadType = mobxdb.model('wrongtype', {
-    name: joi.string().required(),
+    name: joi.string(),
     birth: joi.number()
   })
 
@@ -81,8 +82,17 @@ test.skip('references are typechecked', (t) => {
 
   t.throws(() => {
     const book = new Book({author: notAuthor, name: '2001: A space Oddysey'})
-    ident(book)
-  })
+    console.log(book)
+  }, 'Type wrongtype cannot be in a field author where a type must be author')
 })
 
-test.todo('required refence throws with null')
+test('required refence throws with null', (t) => {
+  const BookWithReq = mobxdb.model('bookWithReq', {
+    author: mobxdb.ref('author').required(),
+    name: joi.string().required()
+  })
+
+  t.throws(() => {
+    const odyssey = new BookWithReq({name: '2001: A space Oddysey'})
+  }, /"author" is required/)
+})
