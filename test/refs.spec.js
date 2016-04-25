@@ -1,22 +1,22 @@
 'use strict'
 import test from 'ava'
-import mobxdb from '../index'
+import proxdb from '../index'
 import backingStore from '../mocks/backing-store-mock'
 
-const debug = require('debug')('mobxdb:spec')
-const {joi} = mobxdb
+const debug = require('debug')('proxdb:spec')
+const {joi} = proxdb
 
 debug('provide fake store')
-mobxdb.backingStore.provide((name) => {
+proxdb.backingStore.provide((name) => {
   return backingStore
 })
-const Author = mobxdb.model('author', {
+const Author = proxdb.model('author', {
   name: joi.string().required(),
   birth: joi.number()
 })
 
-let Book = mobxdb.model('book', {
-  author: mobxdb.ref('author'),
+let Book = proxdb.model('book', {
+  author: proxdb.ref('author'),
   name: joi.string().required()
 })
 let clarke
@@ -26,7 +26,7 @@ test('references are stored by their id only and are populated on startup', (t) 
   t.deepEqual(clarke.id.match(/Z61b763a149d4f5e96a82/).length, 1)
   const odyssey = new Book({author: clarke, name: '2001: A space Oddysey'})
   ident(odyssey)
-  t.deepEqual(backingStore.callLog.put[2].doc, {
+  t.deepEqual(backingStore.callLog.put[1].doc, {
     author: clarke.id,
     name: '2001: A space Oddysey'
   })
@@ -39,15 +39,15 @@ test('references are stored by their id only and are populated on startup', (t) 
   // })
   // debug('bs', backingStore)
   return Book.initPromise.then(() => {
-    console.log('bi', Book.all()[0].author === clarke)
     t.true(Book.all()[0].author === clarke)
     backingStore.stored = []
   })
 })
 
 test('populates array of refs on startup', (t) => {
-  const odyssey = new Book({author: clarke, name: '2001: A space Oddysey'})
+  const odyssey = new Book({author: clarke, name: '2100: A space Oddysey'})
   const rama = new Book({author: clarke, name: 'Rendezvous with Rama'})
+
   backingStore.stored.push({
     key: '20160218T231100.687Z61b763a149d4f5e96a82', value: {
       books: [odyssey.id, rama.id],
@@ -55,8 +55,8 @@ test('populates array of refs on startup', (t) => {
     }
   })
 
-  const Bookstore = mobxdb.model('bookstore', {
-    books: mobxdb.arrayOfRefs('book'),
+  const Bookstore = proxdb.model('bookstore', {
+    books: proxdb.arrayOfRefs('book'),
     address: joi.string().required()
   })
 
@@ -68,9 +68,10 @@ test('populates array of refs on startup', (t) => {
   })
 })
 
-test.skip('references are typechecked', (t) => {
-  const BadType = mobxdb.model('wrongtype', {
-    name: joi.string().required(),
+test('references are typechecked', (t) => {
+  backingStore.stored = []
+  const BadType = proxdb.model('wrongtype', {
+    name: joi.string(),
     birth: joi.number()
   })
 
@@ -81,8 +82,17 @@ test.skip('references are typechecked', (t) => {
 
   t.throws(() => {
     const book = new Book({author: notAuthor, name: '2001: A space Oddysey'})
-    ident(book)
-  })
+    console.log(book)
+  }, 'Type wrongtype cannot be in a field author where a type must be author')
 })
 
-test.todo('required refence throws with null')
+test('required refence throws with null', (t) => {
+  const BookWithReq = proxdb.model('bookWithReq', {
+    author: proxdb.ref('author').required(),
+    name: joi.string().required()
+  })
+
+  t.throws(() => {
+    const odyssey = new BookWithReq({name: '2001: A space Oddysey'})
+  }, /"author" is required/)
+})

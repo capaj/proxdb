@@ -1,3 +1,5 @@
+const debug = require('debug')('proxdb')
+
 const store = {
   callLog: {
     put: [],
@@ -14,7 +16,7 @@ const store = {
   createReadStream: () => {
     return {
       on: (evName, cb) => {
-        console.log(evName)
+        debug(evName)
         if (evName === 'data') {
           store.stored.forEach(cb)
         } else if (evName === 'end') {

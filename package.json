@@ -1,38 +1,41 @@
 {
-  "name": "mobxdb",
+  "name": "proxdb",
   "version": "0.0.1",
-  "description": "an embedded in memory DB on top of levelUp, mobservable and Joi for validations",
+  "description": "an embedded in memory DB on top of levelUp, proxevable and Joi for validations",
   "main": "index.js",
   "scripts": {
-    "pretest": "standard",
-    "precommit": "npm test",
+    "pretest": "echo",
+    "precommit": "echo",
     "test": "ava",
     "tdd": "ava --watch"
   },
   "engines": {
-    "node": ">=5.6.0"
+    "node": ">=6.0.0"
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@gitlab.com/capaj/mobservable-db.git"
+    "url": "git@github.com:capaj/proxdb.git"
   },
   "keywords": [
-    "observable"
+    "observable",
+    "proxevable",
+    "in memory",
+    "database"
   ],
   "author": "capajj@gmail.com",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/capaj/mobxdb/issues"
+    "url": "https://github.com/capaj/proxdb/issues"
   },
-  "homepage": "https://github.com/capaj/mobxdb/blob/master/README.md",
+  "homepage": "https://github.com/capaj/proxdb/blob/master/README.md",
   "dependencies": {
     "bluebird": "^3.1.5",
     "joi": "^8.0.5",
     "level": "^1.4.0",
     "level-sublevel": "^6.5.4",
     "lodash": "^4.9.0",
-    "mobx": "https://github.com/capaj/mobservable.git#with_lib",
     "pluralize": "^1.2.1",
+    "proxevable": "0.0.5",
     "traverse": "^0.6.6"
   },
   "devDependencies": {
@@ -40,7 +43,6 @@
     "chai": "^3.5.0",
     "husky": "^0.11.4",
     "mocha": "^2.4.5",
-    "mockery": "^1.4.0",
     "standard": "^6.0.8"
   }
 }
