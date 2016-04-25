@@ -1,22 +1,22 @@
 'use strict'
 import test from 'ava'
-import mobxdb from '../index'
+import proxdb from '../index'
 import backingStore from '../mocks/backing-store-mock'
 
-const debug = require('debug')('mobxdb:spec')
-const {joi} = mobxdb
+const debug = require('debug')('proxdb:spec')
+const {joi} = proxdb
 
 debug('provide fake store')
-mobxdb.backingStore.provide((name) => {
+proxdb.backingStore.provide((name) => {
   return backingStore
 })
-const Author = mobxdb.model('author', {
+const Author = proxdb.model('author', {
   name: joi.string().required(),
   birth: joi.number()
 })
 
-let Book = mobxdb.model('book', {
-  author: mobxdb.ref('author'),
+let Book = proxdb.model('book', {
+  author: proxdb.ref('author'),
   name: joi.string().required()
 })
 let clarke
@@ -55,8 +55,8 @@ test('populates array of refs on startup', (t) => {
     }
   })
 
-  const Bookstore = mobxdb.model('bookstore', {
-    books: mobxdb.arrayOfRefs('book'),
+  const Bookstore = proxdb.model('bookstore', {
+    books: proxdb.arrayOfRefs('book'),
     address: joi.string().required()
   })
 
@@ -70,7 +70,7 @@ test('populates array of refs on startup', (t) => {
 
 test('references are typechecked', (t) => {
   backingStore.stored = []
-  const BadType = mobxdb.model('wrongtype', {
+  const BadType = proxdb.model('wrongtype', {
     name: joi.string(),
     birth: joi.number()
   })
@@ -87,8 +87,8 @@ test('references are typechecked', (t) => {
 })
 
 test('required refence throws with null', (t) => {
-  const BookWithReq = mobxdb.model('bookWithReq', {
-    author: mobxdb.ref('author').required(),
+  const BookWithReq = proxdb.model('bookWithReq', {
+    author: proxdb.ref('author').required(),
     name: joi.string().required()
   })
 

@@ -1,11 +1,11 @@
 import test from 'ava'
 import getRefPaths from '../../lib/get-ref-paths-for-schema'
-import mobxdb from '../../index'
-const {joi} = mobxdb
+import proxdb from '../../index'
+const {joi} = proxdb
 
 test((t) => {
   let schema = {
-    author: mobxdb.ref('author'),
+    author: proxdb.ref('author'),
     name: joi.string().required()
   }
 

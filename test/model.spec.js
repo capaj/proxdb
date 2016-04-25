@@ -4,7 +4,7 @@ import nmDb from '../index'
 import mobx from 'mobx'
 import backingStore from '../mocks/backing-store-mock'
 
-// const debug = require('debug')('mobxdb:spec')
+// const debug = require('debug')('proxdb:spec')
 const {joi} = nmDb
 nmDb.backingStore.provide((name) => {
   return backingStore
