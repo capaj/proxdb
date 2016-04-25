@@ -31,13 +31,6 @@ test('references are stored by their id only and are populated on startup', (t) 
     name: '2001: A space Oddysey'
   })
 
-  // backingStore.stored.push({
-  //   key: '20160218T231100.687Z61b763a149d4f5e96a82', value: {
-  //     author: clarke.id,
-  //     name: '2001: A space Oddysey'
-  //   }
-  // })
-  // debug('bs', backingStore)
   return Book.initPromise.then(() => {
     t.true(Book.all()[0].author === clarke)
     backingStore.stored = []

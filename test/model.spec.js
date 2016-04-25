@@ -35,6 +35,25 @@ test('any change calls put() method', (t) => {
   })
 })
 
+test('revives with the id from levelup', (t) => {
+  const id = '20160218T231100.687Z61b763a149d4f5e96a82'
+  backingStore.stored = [{
+    key: id, value: {
+      birth: 1948,
+      name: 'George R. R. Martin,'
+    }
+  }]
+
+  const model = proxdb.model('authorSecond', {
+    name: joi.string().required(),
+    birth: joi.number()
+  })
+
+  return model.initPromise.then(() => {
+    t.true(model.all()[0].id === id)
+  })
+})
+
 test('validates any change against the schema and throw if schema validation fails', (t) => {
   try {
     clarke.name = 42
