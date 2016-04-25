@@ -1,16 +1,15 @@
 'use strict'
 import test from 'ava'
-import nmDb from '../index'
-import mobx from 'mobx'
+import proxdb from '../index'
 import backingStore from '../mocks/backing-store-mock'
 
 // const debug = require('debug')('proxdb:spec')
-const {joi} = nmDb
-nmDb.backingStore.provide((name) => {
+const {joi} = proxdb
+proxdb.backingStore.provide((name) => {
   return backingStore
 })
 
-let Author = nmDb.model('author', {
+let Author = proxdb.model('author', {
   name: joi.string().required(),
   birth: joi.number()
 })
