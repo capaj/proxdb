@@ -55,13 +55,25 @@ test('revives with the id from levelup', (t) => {
 })
 
 test('validates any change against the schema and throw if schema validation fails', (t) => {
+
+  const terry = new Author({name: 'Terence David John Pratchett', birth: 1965})
   try {
-    clarke.name = 42
+    terry.name = 42
   } catch (err) {
-    t.deepEqual(err.toString(), 'ValidationError: "value" must be a string')
+    t.regex(err.toString(), /TypeError: Expected string but assigned 42 of type number to property \"name\" on author/)
+    t.is(err.joiError.isJoi, true)
+    t.is(err.joiError.name, 'ValidationError')
+  }
+
+  try {
+    terry.name = null
+  } catch (err) {
+    t.regex(err.toString(), /TypeError: Expected string but assigned null of type any to property \"name\" on author/)
+    t.is(err.joiError.isJoi, true)
+    t.is(err.joiError.name, 'ValidationError')
   }
   // if caught, value should not be set
-  t.truthy(clarke.name === 'A.C.Clarke')
+  t.is(terry.name, 'Terence David John Pratchett')
 })
 
 test('entities can be removed and doing so removes them from the backup by calling del()', (t) => {

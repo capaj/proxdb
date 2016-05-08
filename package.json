@@ -1,6 +1,6 @@
 {
   "name": "proxdb",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "an embedded in memory DB on top of levelUp, proxevable and Joi for validations",
   "main": "index.js",
   "scripts": {
@@ -29,11 +29,11 @@
   },
   "homepage": "https://github.com/capaj/proxdb/blob/master/README.md",
   "dependencies": {
-    "bluebird": "^3.1.5",
-    "joi": "^8.0.5",
+    "bluebird": "^3.3.5",
+    "joi": "^8.1.0",
     "level": "^1.4.0",
     "level-sublevel": "^6.5.4",
-    "lodash": "^4.9.0",
+    "lodash": "^4.11.2",
     "pluralize": "^1.2.1",
     "proxevable": "0.0.5",
     "traverse": "^0.6.6"
@@ -43,6 +43,6 @@
     "chai": "^3.5.0",
     "husky": "^0.11.4",
     "mocha": "^2.4.5",
-    "standard": "^6.0.8"
+    "standard": "^7.0.1"
   }
 }
