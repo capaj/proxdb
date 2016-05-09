@@ -1,8 +1,8 @@
 'use strict'
 import test from 'ava'
 import proxdb from '../index'
-import backingStore from '../mocks/backing-store-mock'
-
+import backingStoreMock from '../mocks/backing-store-mock'
+const backingStore = backingStoreMock()
 const debug = require('debug')('proxdb:spec')
 const {joi} = proxdb
 

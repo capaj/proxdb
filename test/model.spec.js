@@ -1,8 +1,9 @@
 'use strict'
 import test from 'ava'
 import proxdb from '../index'
-import backingStore from '../mocks/backing-store-mock'
+import backingStoreMock from '../mocks/backing-store-mock'
 
+const backingStore = backingStoreMock()
 // const debug = require('debug')('proxdb:spec')
 const {joi} = proxdb
 proxdb.backingStore.provide((name) => {
@@ -16,6 +17,7 @@ let Author = proxdb.model('author', {
 
 let clarke
 test('returns contructor and constructor works', (t) => {
+  t.is(Author.all().length, 0)
   clarke = new Author({name: 'A.C.Clarke', birth: 1965})
   t.deepEqual(clarke.name, 'A.C.Clarke')
   t.deepEqual(clarke.birth, 1965)
