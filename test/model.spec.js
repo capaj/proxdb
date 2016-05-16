@@ -82,3 +82,17 @@ test('entities can be removed and doing so removes them from the backup by calli
   clarke.remove()
   t.deepEqual(backingStore.callLog.del[0].id.match(/Z8b68eaf153c763eb8688/).length, 1)
 })
+
+test('should save unknown props', (t) => {
+  backingStore.callLog.put = []
+  const testModel = proxdb.model('testModel', joi.object({
+    name: joi.string().required(),
+    health: joi.number()
+  }).unknown(true))
+
+  new testModel({name: 'Arya', health: 50, c: 10})
+  const {doc} = backingStore.callLog.put[0]
+  t.is(doc.name, 'Arya')
+  t.is(doc.health, 50)
+  t.is(doc.c, 10)
+})

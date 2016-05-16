@@ -4,6 +4,12 @@ const model = require('./lib/model')
 const ref = (name) => {
   const objSchema = joi.object()
   objSchema._proxDbRefTo = name
+  const origAllow = objSchema.allow
+  objSchema.allow = (what) => {
+    const schema = origAllow.call(objSchema, what)
+    schema._proxDbRefTo = name
+    return schema
+  }
   return objSchema
 }
 

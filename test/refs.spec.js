@@ -16,7 +16,7 @@ const Author = proxdb.model('author', {
 })
 
 let Book = proxdb.model('book', {
-  author: proxdb.ref('author'),
+  author: proxdb.ref('author').allow(null),
   name: joi.string().required()
 })
 let clarke
@@ -30,9 +30,11 @@ test('references are stored by their id only and are populated on startup', (t) 
     author: clarke.id,
     name: '2001: A space Oddysey'
   })
+  const noBookEver = new Book({author: null, name: 'Such a book can exist only for testing'})
 
   return Book.initPromise.then(() => {
     t.true(Book.all()[0].author === clarke)
+    t.true(Book.all()[1].author === null)
     backingStore.stored = []
   })
 })
@@ -69,13 +71,12 @@ test('references are typechecked', (t) => {
   })
 
   const notAuthor = new BadType({
-    name: 'test',
+    name: 'test not author',
     birth: 1
   })
 
   t.throws(() => {
     const book = new Book({author: notAuthor, name: '2001: A space Oddysey'})
-    console.log(book)
   }, 'Type wrongtype cannot be in a field author where a type must be author')
 })
 
@@ -88,4 +89,8 @@ test('required refence throws with null', (t) => {
   t.throws(() => {
     const odyssey = new BookWithReq({name: '2001: A space Oddysey'})
   }, /"author" is required/)
+
+  t.throws(() => {
+    const odyssey = new BookWithReq({name: '2001: A space Oddysey', author: null})
+  }, /"author" must be an object/)
 })
