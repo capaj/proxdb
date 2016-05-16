@@ -1,6 +1,6 @@
 {
   "name": "proxdb",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "an embedded in memory DB on top of levelUp, proxevable and Joi for validations",
   "main": "index.js",
   "scripts": {
