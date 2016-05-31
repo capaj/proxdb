@@ -1,6 +1,6 @@
 const proxdb = require('../index')
 
-proxdb.init('./test-db-self-refs')
+proxdb.init('./test/db-self-refs')
 const {joi} = proxdb
 
 const Human = proxdb.model('human', {
