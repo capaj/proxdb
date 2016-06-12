@@ -1,23 +1,26 @@
 const proxdb = require('../index')
+import test from 'ava'
 
-proxdb.init('./test-db-self-refs')
+proxdb.init('./test/db-self-refs')
 const {joi} = proxdb
 
-const Human = proxdb.model('human', {
-    name: joi.string(),
-    birth: joi.number(),
-    likes: proxdb.ref('human')
+test('self refs', (t) => {
+  const Human = proxdb.model('human', {
+      name: joi.string(),
+      birth: joi.number(),
+      likes: proxdb.ref('human')
+    }, {
+      create: (human) => {
+
+      }
+    })
+
+  // const joe = new Human({name: 'Joe'})
+  // const sally = new Human({name: 'Sally'})
+  // joe.likes = sally
+  // sally.likes = joe
+
+  return Human.initPromise.then((doc) => {
+    console.log(doc)
   })
-
-// const joe = new Human({name: 'Joe'})
-// const sally = new Human({name: 'Sally'})
-// joe.likes = sally
-// sally.likes = joe
-
-console.log('aa')
-Human.resolveDoc('20160527T065543.355Z7b2bcc344c17e630325a').then((doc) => {
-  console.log(doc)
 })
-setTimeout(() => {
-  console.log('end')
-}, 4000)

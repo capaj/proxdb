@@ -15,7 +15,7 @@ module.exports = () => {
       return Promise.resolve()
     },
     createReadStream: () => {
-      return {
+      const fakeStream = {
         on: (evName, cb) => {
           debug(evName)
           if (evName === 'data') {
@@ -23,8 +23,10 @@ module.exports = () => {
           } else if (evName === 'end') {
             setTimeout(cb, 2)
           }
+          return fakeStream
         }
       }
+      return fakeStream
     },
     stored: []
   }
