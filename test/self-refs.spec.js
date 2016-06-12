@@ -4,7 +4,7 @@ import test from 'ava'
 proxdb.init('./dbs/self-refs')
 const {joi} = proxdb
 
-test.only('self refs', (t) => {
+test('self refs', (t) => {
   const Human = proxdb.model('human', {
       name: joi.string(),
       birth: joi.number(),
@@ -19,7 +19,5 @@ test.only('self refs', (t) => {
   // const sally = new Human({name: 'Sally'})
   // joe.likes = sally
   // sally.likes = joe
-  return Human.initPromise.then((doc) => {
-    console.log(doc)
-  })
+  return Human.initPromise
 })
