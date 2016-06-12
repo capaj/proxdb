@@ -20,7 +20,7 @@ module.exports = () => {
           debug(evName)
           if (evName === 'data') {
             store.stored.forEach(cb)
-          } else if (evName === 'end') {
+          } else if (evName === 'close') {
             setTimeout(cb, 2)
           }
           return fakeStream

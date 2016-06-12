@@ -1,10 +1,10 @@
 const proxdb = require('../index')
 import test from 'ava'
 
-proxdb.init('./test/db-self-refs')
+proxdb.init('./dbs/self-refs')
 const {joi} = proxdb
 
-test('self refs', (t) => {
+test.only('self refs', (t) => {
   const Human = proxdb.model('human', {
       name: joi.string(),
       birth: joi.number(),
@@ -19,7 +19,6 @@ test('self refs', (t) => {
   // const sally = new Human({name: 'Sally'})
   // joe.likes = sally
   // sally.likes = joe
-
   return Human.initPromise.then((doc) => {
     console.log(doc)
   })
