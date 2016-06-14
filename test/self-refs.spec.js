@@ -21,3 +21,7 @@ test('self refs', (t) => {
   // sally.likes = joe
   return Human.initPromise
 })
+
+test('reference is still checked, even with cyclic refs', (t) => {
+
+})
