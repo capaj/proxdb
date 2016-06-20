@@ -31,8 +31,8 @@
   "homepage": "https://github.com/capaj/proxdb/blob/master/README.md",
   "dependencies": {
     "benchmark": "^2.1.0",
-    "bluebird": "^3.4.0",
-    "joi": "^8.4.1",
+    "bluebird": "^3.4.1",
+    "joi": "^8.4.2",
     "level": "^1.4.0",
     "level-sublevel": "^6.5.4",
     "lodash": "^4.13.1",
