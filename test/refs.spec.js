@@ -101,13 +101,12 @@ test.cb('array of refs are typechecked', (t) => {
     address: joi.string().required()
   })
 
-
   t.throws(() => {
     const bs = new Bookstore({
       books: [badType2],
       address: 'problematic road 2'
     })
-  }, /"author" is required/)
+  }, /Type wrongtype cannot be in a field books where a type must be book/)
 
   Bookstore.initPromise.then(() => {
     t.end()
