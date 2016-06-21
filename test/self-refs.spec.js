@@ -1,7 +1,7 @@
 const proxdb = require('../index')
 import test from 'ava'
 
-proxdb.init('./dbs/self-refs')
+proxdb.init('./fixtures/self-refs')
 const {joi} = proxdb
 
 test('self refs', (t) => {

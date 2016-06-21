@@ -30,7 +30,7 @@ test('references are stored by their id only and are populated on startup', (t) 
     author: clarke.id,
     name: '2001: A space Oddysey'
   })
-  const noBookEver = new Book({author: null, name: 'Such a book can exist only for testing'})
+  const noBookEver = new Book({author: null, name: 'Holy bible'})
 
   return Book.initPromise.then(() => {
     t.true(Book.all()[0].author === clarke)
@@ -63,12 +63,13 @@ test('populates array of refs on startup', (t) => {
   })
 })
 
+const BadType = proxdb.model('wrongtype', {
+  name: joi.string(),
+  birth: joi.number()
+})
+
 test('references are typechecked', (t) => {
   backingStore.stored = []
-  const BadType = proxdb.model('wrongtype', {
-    name: joi.string(),
-    birth: joi.number()
-  })
 
   const notAuthor = new BadType({
     name: 'test not author',
@@ -78,9 +79,47 @@ test('references are typechecked', (t) => {
   t.throws(() => {
     const book = new Book({author: notAuthor, name: '2001: A space Oddysey'})
   }, 'Type wrongtype cannot be in a field author where a type must be author')
+
+
+})
+
+test.cb('array of refs are typechecked', (t) => {
+
+  const badType2 = new BadType({
+    name: 'this is just a pretender',
+    birth: 1
+  })
+
+  backingStore.stored.push({
+    key: '20160218T231100.687Z61b763a149d4f5e96a82', value: {
+        books: [badType2.id],
+        address: 'problematic road 1'
+      }
+  })
+  const Bookstore = proxdb.model('anotherBookstore', {
+    books: proxdb.arrayOfRefs('book'),
+    address: joi.string().required()
+  })
+
+
+  t.throws(() => {
+    const bs = new Bookstore({
+      books: [badType2],
+      address: 'problematic road 2'
+    })
+  }, /"author" is required/)
+
+  Bookstore.initPromise.then(() => {
+    t.end()
+  }, (e) => {
+    console.log('e', e)
+    t.end()
+  })
 })
 
 test('required refence throws with null', (t) => {
+  backingStore.stored = []
+
   const BookWithReq = proxdb.model('bookWithReq', {
     author: proxdb.ref('author').required(),
     name: joi.string().required()
