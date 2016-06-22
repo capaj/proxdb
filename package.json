@@ -1,11 +1,11 @@
 {
   "name": "proxdb",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "an embedded in memory DB on top of levelUp, proxevable and Joi for validations",
   "main": "index.js",
   "scripts": {
     "pretest": "echo",
-    "precommit": "echo",
+    "precommit": "standard",
     "test": "ava",
     "test-dbg": "DEBUG=proxdb ava",
     "tdd": "ava --watch"

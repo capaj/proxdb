@@ -30,7 +30,7 @@ test('references are stored by their id only and are populated on startup', (t) 
     author: clarke.id,
     name: '2001: A space Oddysey'
   })
-  const noBookEver = new Book({author: null, name: 'Holy bible'})
+  new Book({author: null, name: 'Holy bible'})  // eslint-disable-line
 
   return Book.initPromise.then(() => {
     t.true(Book.all()[0].author === clarke)
@@ -77,14 +77,11 @@ test('references are typechecked', (t) => {
   })
 
   t.throws(() => {
-    const book = new Book({author: notAuthor, name: '2001: A space Oddysey'})
+    new Book({author: notAuthor, name: '2001: A space Oddysey'})  // eslint-disable-line
   }, 'Type wrongtype cannot be in a field author where a type must be author')
-
-
 })
 
 test.cb('array of refs are typechecked', (t) => {
-
   const badType2 = new BadType({
     name: 'this is just a pretender',
     birth: 1
@@ -92,9 +89,9 @@ test.cb('array of refs are typechecked', (t) => {
 
   backingStore.stored.push({
     key: '20160218T231100.687Z61b763a149d4f5e96a82', value: {
-        books: [badType2.id],
-        address: 'problematic road 1'
-      }
+      books: [badType2.id],
+      address: 'problematic road 1'
+    }
   })
   const Bookstore = proxdb.model('anotherBookstore', {
     books: proxdb.arrayOfRefs('book'),
@@ -102,7 +99,7 @@ test.cb('array of refs are typechecked', (t) => {
   })
 
   t.throws(() => {
-    const bs = new Bookstore({
+    new Bookstore({ // eslint-disable-line
       books: [badType2],
       address: 'problematic road 2'
     })
@@ -111,7 +108,6 @@ test.cb('array of refs are typechecked', (t) => {
   Bookstore.initPromise.then(() => {
     t.end()
   }, (e) => {
-    console.log('e', e)
     t.end()
   })
 })
@@ -125,10 +121,10 @@ test('required refence throws with null', (t) => {
   })
 
   t.throws(() => {
-    const odyssey = new BookWithReq({name: '2001: A space Oddysey'})
+    new BookWithReq({name: '2001: A space Oddysey'})  // eslint-disable-line
   }, /"author" is required/)
 
   t.throws(() => {
-    const odyssey = new BookWithReq({name: '2001: A space Oddysey', author: null})
+    new BookWithReq({name: '2001: A space Oddysey', author: null})  // eslint-disable-line
   }, /"author" must be an object/)
 })
