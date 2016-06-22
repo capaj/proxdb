@@ -57,12 +57,11 @@ test('revives with the id from levelup', (t) => {
 })
 
 test('validates any change against the schema and throw if schema validation fails', (t) => {
-
   const terry = new Author({name: 'Terence David John Pratchett', birth: 1965})
   try {
     terry.name = 42
   } catch (err) {
-    t.regex(err.toString(), /TypeError: Expected string but assigned 42 of type number to property \"name\" on author/)
+    t.regex(err.toString(), /TypeError: Expected string but assigned 42 of type number to property "name" on author/)
     t.is(err.joiError.isJoi, true)
     t.is(err.joiError.name, 'ValidationError')
   }
@@ -70,7 +69,7 @@ test('validates any change against the schema and throw if schema validation fai
   try {
     terry.name = null
   } catch (err) {
-    t.regex(err.toString(), /TypeError: Expected string but assigned null of type any to property \"name\" on author/)
+    t.regex(err.toString(), /TypeError: Expected string but assigned null of type any to property "name" on author/)
     t.is(err.joiError.isJoi, true)
     t.is(err.joiError.name, 'ValidationError')
   }
@@ -90,7 +89,7 @@ test('should save unknown props', (t) => {
     health: joi.number()
   }).unknown(true))
 
-  new testModel({name: 'Arya', health: 50, c: 10})
+  new testModel({name: 'Arya', health: 50, c: 10})  // eslint-disable-line
   const {doc} = backingStore.callLog.put[0]
   t.is(doc.name, 'Arya')
   t.is(doc.health, 50)

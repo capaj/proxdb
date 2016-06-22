@@ -11,7 +11,6 @@ let Author = proxdb.model('author', {
   birth: joi.number()
 })
 
-let clarke
 let terry
 let asimov
 let larry
@@ -23,7 +22,7 @@ test('query is always up 2 date and can be stopped', (t) => {
     }).value()
   })
   t.is(query.result.length, 0)
-  clarke = new Author({name: 'A.C.Clarke', birth: 1917})
+  new Author({name: 'A.C.Clarke', birth: 1917})  // eslint-disable-line
   terry = new Author({name: 'Terence David John Pratchett', birth: 1965})
   asimov = new Author({name: 'Asimov', birth: 1949})
   t.is(query.result.length, 2)
@@ -35,8 +34,6 @@ test('query is always up 2 date and can be stopped', (t) => {
   t.is(query.result[0], terry)
   t.is(query.result[1], asimov)
 })
-
-
 
 test.cb('query can be debounced', (t) => {
   t.plan(6)

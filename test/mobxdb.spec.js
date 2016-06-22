@@ -10,7 +10,6 @@ test('should define a ref() type', (t) => {
   t.is(ts.prop._proxDbRefTo, 'some_schema')
 })
 
-
 test('ref() type and allow(null)', (t) => {
   const ts = {
     prop: nmDb.ref('some_schema').allow(null)
@@ -22,9 +21,9 @@ test('ref() type and allow(null)', (t) => {
 
 test('defines an arrayOfRefs() type', (t) => {
   const ts = {
-    prop: nmDb.ref('some_schema')
+    prop: nmDb.arrayOfRefs('some_schema')
   }
   t.is(ts.prop.isJoi, true)
-  t.is(ts.prop._type, 'object')
+  t.is(ts.prop._type, 'array')
   t.is(ts.prop._proxDbRefTo, 'some_schema')
 })

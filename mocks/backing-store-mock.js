@@ -15,16 +15,18 @@ module.exports = () => {
       return Promise.resolve()
     },
     createReadStream: () => {
-      return {
+      const fakeStream = {
         on: (evName, cb) => {
           debug(evName)
           if (evName === 'data') {
             store.stored.forEach(cb)
-          } else if (evName === 'end') {
+          } else if (evName === 'close') {
             setTimeout(cb, 2)
           }
+          return fakeStream
         }
       }
+      return fakeStream
     },
     stored: []
   }
